@@ -1,0 +1,5 @@
+{
+    "customer@example.com": {"password": "customer123", "role": "customer"},
+    "shopkeeper@example.com": {"password": "shop123", "role": "shopkeeper"}
+  }
+  
