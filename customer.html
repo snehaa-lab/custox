@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Customer Dashboard - Custox</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/script.js" defer></script>
+  <style>
+    .dashboard-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .dashboard-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      width: 100%;
+    }
+    
+    .dashboard-section {
+      margin-bottom: 30px;
+    }
+    
+    .product-card {
+      display: flex;
+      background-color: #f8f8f8;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      align-items: center;
+    }
+    
+    .product-info {
+      flex: 1;
+    }
+    
+    .notification-item {
+      background-color: #f1f1f1;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border-left: 4px solid #f864ae;
+    }
+    
+    .notification-item.unread {
+      background-color: #ffeef7;
+    }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 4px;
+      display: none;
+      z-index: 1000;
+    }
+    
+    .badge {
+      display: inline-block;
+      background-color: #f864ae;
+      color: white;
+      border-radius: 50%;
+      padding: 0.25em 0.6em;
+      font-size: 0.75em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">Custox</div>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#" id="notifications-link">Notifications <span id="notification-badge" class="badge">0</span></a></li>
+        <li><a href="#" id="logout-btn">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="notification" id="notification">
+    Operation successful!
+  </div>
+
+  <section class="dashboard-container">
+    <div class="dashboard-card">
+      <h2>Customer Dashboard</h2>
+      <p id="welcome-message">Welcome back!</p>
+      
+      <div class="dashboard-section">
+        <h3>Your T-Shirt Preferences</h3>
+        <div id="preferences-summary">
+          <!-- Preferences will be loaded here -->
+        </div>
+      </div>
+      
+      <div class="dashboard-section">
+        <h3>Recommended T-Shirts In Your Area</h3>
+        <div id="loading-recommendations" class="loading">Loading recommendations...</div>
+        <div id="recommendations-list">
+          <!-- Recommendations will be populated here -->
+        </div>
+      </div>
+      
+      <div class="dashboard-section">
+        <h3>Notifications</h3>
+        <div id="loading-notifications" class="loading">Loading notifications...</div>
+        <div id="notifications-list">
+          <!-- Notifications will be populated here -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Custox. All rights reserved.</p>
+  </footer>
+</body>
+</html>

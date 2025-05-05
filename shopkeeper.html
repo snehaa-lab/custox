@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Shopkeeper Dashboard - Custox</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="/script.js" defer></script>
+  
+  <style>
+    .dashboard-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .dashboard-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      width: 100%;
+    }
+    
+    .dashboard-section {
+      margin-bottom: 30px;
+    }
+    
+    .inventory-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .customer-preference {
+      background-color: #f8f8f8;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+    
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 4px;
+      display: none;
+      z-index: 1000;
+    }
+      /* Enhanced form styling */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 30px;
+      background-color: #f8f8f8;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .form-grid label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .form-grid input, 
+    .form-grid select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    
+    .form-grid input:focus,
+    .form-grid select:focus {
+      border-color: #f864ae;
+      box-shadow: 0 0 0 2px rgba(248, 100, 174, 0.2);
+      outline: none;
+    }
+    
+    .form-grid button {
+      background: linear-gradient(135deg, #f864ae 0%, #d3517d 100%);
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 6px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .form-grid button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+    }
+    
+    .dashboard-section h3 {
+      color: #d3517d;
+      margin-bottom: 20px;
+      font-size: 24px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    .dashboard-section h3:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background-color: #f864ae;
+    }
+    
+    .inventory-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      background-color: #f8f8f8;
+      transition: all 0.3s ease;
+    }
+    
+    .inventory-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .stock-badge {
+      background-color: #f864ae;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">Custox</div>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#" id="logout-btn">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="notification" id="notification">
+    Operation successful!
+  </div>
+
+  <section class="dashboard-container">
+    <div class="dashboard-card">
+      <h2>Shopkeeper Dashboard</h2>
+      <p id="welcome-message">Welcome back!</p>
+      
+      <div class="dashboard-section">
+        <h3>Add New Inventory</h3>
+        <form id="add-inventory-form" class="form-grid">
+          <div>
+            <label for="size">Size:</label>
+            <select id="size" required>
+              <option value="">Select Size</option>
+              <option value="S">Small (S)</option>
+              <option value="M">Medium (M)</option>
+              <option value="L">Large (L)</option>
+              <option value="XL">Extra Large (XL)</option>
+              <option value="XXL">Double XL (XXL)</option>
+            </select>
+          </div>
+          
+          <div>
+            <div>
+              <label for="price">Price Range:</label>
+              <select id="price" required>
+                <option value="">Select Price Range</option>
+                <option value="200-400">200-400</option>
+                <option value="400-600">400-600</option>
+                <option value="600-800">600-800</option>
+                <option value="800-1000">800-1000</option>
+              </select>
+            </div>
+          </div>
+          
+          <div>
+            <label for="print">Print/Design:</label>
+            <input type="text" id="print" placeholder="e.g, front print, back print" required>
+          </div>
+          
+          <div>
+            <label for="stock">Stock Quantity:</label>
+            <input type="number" id="stock" min="1" placeholder="Number of items" required>
+          </div>
+          
+          <button type="submit" class="signup-btn" style="grid-column: span 2;">Add to Inventory</button>
+        </form>
+      </div>
+      
+      <div class="dashboard-section">
+        <h3>Customer Segmentation Analysis</h3>
+        <div class="upload-section">
+          <form id="analysis-form" enctype="multipart/form-data">
+            <div class="form-grid">
+              <div style="grid-column: span 2;">
+                <label for="csv-file">Upload Customer Data (CSV file)</label>
+                <input type="file" id="csv-file" name="csvFile" accept=".csv" class="form-control">
+                <small class="form-text text-muted">Upload your customer data to get insights. Format should include columns for customer ID, purchase date, size, price, print type.</small>
+              </div>
+              <button type="submit" style="grid-column: span 2;">Analyze Data</button>
+            </div>
+          </form>
+          <div id="analysis-loading" class="loading" style="display: none;">
+            <div class="spinner-border text-primary" role="status">
+              <span class="sr-only">Loading...</span>
+            </div id="analysis-loading" style="display: none;">>
+            <p>Analyzing your data...</p>
+          </div>
+        </div>
+      </div>
+      
+      
+      <div class="dashboard-section">
+        <h3>Current Inventory</h3>
+        <div id="loading-inventory" class="loading">Loading inventory...</div>
+        <div id="inventory-list">
+          <!-- Inventory items will be populated here -->
+        </div>
+      </div>
+      
+      <div class="dashboard-section">
+        <h3>Customer Preferences in Your Area</h3>
+        <div id="loading-preferences" class="loading">Loading preferences...</div>
+        <div id="customer-preferences">
+          <!-- Customer preferences will be populated here -->
+        </div>
+      </div>
+    </div>
+    <!-- Add this after your analysis-loading div -->
+<div id="analysis-results" style="display: none;">
+  <div class="result-section">
+    <h4>Customer Segments</h4>
+    <div id="cluster-visualization"></div>
+  </div>
+  
+  <div class="result-section">
+    <h4>Segment Insights</h4>
+    <div id="insights-list"></div>
+  </div>
+  
+  <div class="result-section">
+    <h4>Cluster Analysis</h4>
+    <canvas id="elbow-curve" width="400" height="200"></canvas>
+  </div>
+  
+  <div class="result-section">
+    <h4>Basic Demographics</h4>
+    <div class="charts-grid">
+      <div>
+        <canvas id="sizes-chart" width="300" height="200"></canvas>
+      </div>
+      <div>
+        <canvas id="prints-chart" width="300" height="200"></canvas>
+      </div>
+      <div>
+        <canvas id="prices-chart" width="300" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Custox. All rights reserved.</p>
+  </footer>
+</body>
+</html>

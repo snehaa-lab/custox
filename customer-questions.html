@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Customer Questions - Custox</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/script.js" defer></script>
+</head>
+<body>
+  <section class="customer-questions-section">
+    <h2>Please Answer the Following Questions</h2>
+    <form id="customer-questions-form">
+      <label for="phone">1. What is your phone number?</label>
+      <input type="tel" id="phone" placeholder="Enter your phone number" required>
+      
+      <label for="age">2. What is your age?</label>
+      <input type="number" id="age" required>
+      
+      <label for="gender">3. What is your gender?</label>
+      <select id="gender" required>
+        <option value="" disabled selected>Select gender</option> 
+        <option value="female">Female</option>
+        <option value="male">Male</option>
+      </select>
+      
+      <label for="area-name">4. Your area name:</label>
+      <input type="text" id="area-name" required>
+  
+      <label for="pincode">5. Pincode:</label>
+      <input type="text" id="pincode" required>
+  
+      <label for="city">6. City:</label>
+      <input type="text" id="city" required>
+      
+      <label for="state">7. State:</label>
+      <input type="text" id="state" required>
+  
+      <label for="tshirt-size">8. What's your preferred size of T-shirt?</label>
+      <input type="text" id="tshirt-size" required>
+  
+      <label for="print-type">9. What kind of print do you want?</label>
+      <select id="print-type" required>
+        <option value="" disabled selected>Select print type</option> 
+        <option value="front">Front Print</option>
+        <option value="back">Back Print</option>
+      </select>
+  
+      <label for="price-range">10. Preferred price range:</label>
+      <select id="price-range" required>
+        <option value="" disabled selected>Select your price range</option>
+        <option value="200-400">200-400</option>
+        <option value="400-600">400-600</option>
+        <option value="600-800">600-800</option>
+        <option value="800-1000">800-1000</option>
+      </select>
+          
+      <button type="submit" class="signup-btn">Submit</button>
+    </form>
+  </section>
+</body>
+</html>
